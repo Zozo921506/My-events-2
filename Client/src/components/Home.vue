@@ -30,6 +30,7 @@ export default {
         }
     },
 
+    //Will filter the events by location_address when typping in the search bar
     computed: {
         filterEvents()
         {
@@ -47,6 +48,9 @@ export default {
         <h1>My events 2</h1>
         <br></br>
         <input type="text" placeholder="Rechercher des évènements" v-model="search"></input>
+        <div v-if="filterEvents.length === 0">
+            <p>Aucun résultat à votre recherche</p>
+        </div>
         <div v-for="event in filterEvents" v-bind:key="event.uid">
             <div>
                 <router-link :to="event.slug">
