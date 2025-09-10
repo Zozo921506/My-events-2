@@ -8,7 +8,10 @@ export default {
 
     //Will return the data when fynction mounted will be finish
     data() {
-        return {events:undefined};
+        return {
+            events:undefined,
+            defaultImage : "/public/default_image.jpg"
+        };
     },
 
     //Will try to fetch the API and will set events or catch an eventually error 
@@ -36,7 +39,7 @@ export default {
         <div v-for="event in events" v-bind:key="event.uid">
             <div>
                 <p>{{ event.title_fr }}</p>
-                <img :src="event.image"  :alt="event.title_fr"></img>
+                <img :src="event.image || defaultImage"  :alt="event.title_fr"></img>
             </div>
         </div>
     </div>
