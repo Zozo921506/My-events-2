@@ -6,11 +6,11 @@ import axios from 'axios';
 export default {
     name: "getEvents",
 
-    //Will return the data when fynction mounted will be finish
+    //Will return the data when function mounted will be finish and will set a default image if no image from an event
     data() {
         return {
             events:undefined,
-            defaultImage : "/public/default_image.jpg"
+            defaultImage : "/default_image.jpg"
         };
     },
 
@@ -33,14 +33,19 @@ export default {
 </script>
 
 <template>
-    <div>
+    <div v-if="events">
         <h1>My events 2</h1>
         <br></br>
         <div v-for="event in events" v-bind:key="event.uid">
             <div>
-                <p>{{ event.title_fr }}</p>
-                <img :src="event.image || defaultImage"  :alt="event.title_fr"></img>
+                <router-link :to="event.slug">
+                    <p>{{ event.title_fr }}</p>
+                    <img :src="event.image || defaultImage"  :alt="event.title_fr"></img>
+                </router-link>
             </div>
         </div>
+    </div>
+    <div v-else>
+        <p>Loading...</p>
     </div>
 </template>
