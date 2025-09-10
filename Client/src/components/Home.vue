@@ -10,7 +10,8 @@ export default {
     data() {
         return {
             events:undefined,
-            defaultImage : "/default_image.jpg"
+            defaultImage : "/default_image.jpg",
+            search: ""
         };
     },
 
@@ -27,6 +28,15 @@ export default {
         {
             console.error(e);
         }
+    },
+
+    computed: {
+        filterEvents()
+        {
+            return this.events.filter(event => {
+                return event.location_address.toLowerCase().includes(this.search.toLowerCase());
+            });
+        }
     }
 }
 
@@ -36,7 +46,8 @@ export default {
     <div v-if="events">
         <h1>My events 2</h1>
         <br></br>
-        <div v-for="event in events" v-bind:key="event.uid">
+        <input type="text" placeholder="Rechercher des évènements" v-model="search"></input>
+        <div v-for="event in filterEvents" v-bind:key="event.uid">
             <div>
                 <router-link :to="event.slug">
                     <p>{{ event.title_fr }}</p>
