@@ -39,7 +39,7 @@ export default
         <h2>{{ details.title_fr }}</h2>
         <img :src="details.thumbnail || defaultImage" :alt="details.title_fr"></img>
         <p>Description: {{ details.description_fr }}</p>
-        <p>Description longue: {{ details.longdescription_fr }}</p>
+        <p>Description longue: <span v-html="details.longdescription_fr"></span></p>
     </div>
     <div v-else>
         <p>Loading ...</p>
