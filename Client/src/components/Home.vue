@@ -45,7 +45,6 @@ export default {
 
 <template>
     <div v-if="events">
-        <h1>My events 2</h1>
         <br></br>
         <input type="text" placeholder="Rechercher des évènements" v-model="search"></input>
         <div v-if="filterEvents.length === 0">
