@@ -29,7 +29,7 @@ const callback = (response) => {
 
 <template>
   <main>
-    <h1>My events 2</h1>
+    <h1 id="main_title"><RouterLink to="/">My events 2</RouterLink></h1>
     <div v-if="!loggedUser">
       <GoogleLogin :callback="callback"/>
     </div>

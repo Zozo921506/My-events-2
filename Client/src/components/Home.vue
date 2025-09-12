@@ -50,12 +50,14 @@ export default {
         <div v-if="filterEvents.length === 0">
             <p>Aucun résultat à votre recherche</p>
         </div>
-        <div v-for="event in filterEvents" v-bind:key="event.uid">
-            <div>
-                <router-link :to="event.slug">
-                    <p>{{ event.title_fr }}</p>
-                    <img :src="event.image || defaultImage"  :alt="event.title_fr"></img>
-                </router-link>
+        <div id="events_container">
+            <div v-for="event in filterEvents" v-bind:key="event.uid" id="display_events">
+                <div class="event_box">
+                    <router-link :to="event.slug">
+                        <p class="event_title"><strong>{{ event.title_fr }}</strong></p>
+                        <img :src="event.image || defaultImage"  :alt="event.title_fr" class="events_pic"></img>
+                    </router-link>
+                </div>
             </div>
         </div>
     </div>
