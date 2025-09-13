@@ -3,22 +3,42 @@
 import { GoogleLogin } from 'vue3-google-login';
 import { ref } from 'vue';
 import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 
 //Will be updated when a user log in with google
 const loggedUser = ref(null);
 
 //Will get an answer from google
-const callback = (response) => {
+const callback = async (response) => {
   console.log(response);
   if (response?.credential)
   {
     const decode = jwtDecode(response.credential);
-    loggedUser.value = {
-      name: decode.name,
-      email: decode.email,
-      image: decode.picture
+
+    //Will try send the data in the backend
+    try
+    {
+      const res = await axios.post('http://localhost:8000/login', {
+        name: decode.name,
+        email: decode.email,
+        image: decode.picture
+      })
+
+      //Will update the data if they are a message
+      if (res.data.message)
+      {
+        loggedUser.value = res.data.user;
+        console.log(loggedUser);
+      }
+      else
+      {
+        console.log('An error occur');
+      }
     }
-    console.log(loggedUser);
+    catch(e)
+    {
+      console.error(e);
+    }
   }
   else
   {
