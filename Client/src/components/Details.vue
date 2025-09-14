@@ -27,6 +27,7 @@ export default
             this.details = response.data.results[0] //Take the first elem of the array do be able to display it
             console.log(this.details);
 
+            //Will fetch the weather of the event for 7 days
             let getWeather = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${this.details.location_coordinates.lat}&longitude=${this.details.location_coordinates.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe/Paris&forecast_days=7`)
             const codes = {
                 0: "Ciel clair ☀️",
@@ -43,6 +44,7 @@ export default
                 95: "Orage ⛈️"
             }
 
+            //Will display the value of the code instead of the code
             this.forecast = getWeather.data.daily.time.map((date, i) => ({
                 date,
                 weather: codes[getWeather.data.daily.weathercode[i]] || "Inconnu",
