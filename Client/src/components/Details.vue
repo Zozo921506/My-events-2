@@ -61,15 +61,17 @@ export default
 </script>
 
 <template>
-    <div v-if="details">
-        <h2>{{ details.title_fr }}</h2>
-        <img :src="details.thumbnail || defaultImage" :alt="details.title_fr"></img>
-        <p>Description: {{ details.description_fr }}</p>
-        <p>Description longue: <span v-html="details.longdescription_fr"></span></p>
-        <div v-if="forecast.length">
-        <h3>Prévison météorologique de 7 jours</h3>
-            <ul>
-                <li v-for="day in forecast" :key="day.date">
+    <div v-if="details" class="details_container">
+        <h2 class="details_container">{{ details.title_fr }}</h2>
+        <img :src="details.thumbnail || defaultImage" :alt="details.title_fr" class="details_image"></img>
+        <div class="details_content">
+            <p>Description: {{ details.description_fr }}</p>
+            <p>Description longue: <span v-html="details.longdescription_fr"></span></p>
+        </div>
+        <div v-if="forecast.length" class="weather_container">
+        <h3 class="weather_title">Prévison météorologique de 7 jours</h3>
+            <ul class="weather_list">
+                <li v-for="day in forecast" :key="day.date" class="weather_item">
                 <strong>{{ day.date }}</strong> :
                 {{ day.weather }} — {{ day.min }}°C / {{ day.max }}°C
                 </li>
