@@ -12,7 +12,8 @@ export default
     {
         return {
             details: null,
-            defaultImage : "/default_image.jpg"
+            defaultImage : "/default_image.jpg",
+            forecast: []
         };
     },
 
@@ -25,6 +26,29 @@ export default
             let response = await axios.get(`https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/evenements-publics-openagenda/records?select=*&where=slug%20%3D%20%22${slug}%22`);
             this.details = response.data.results[0] //Take the first elem of the array do be able to display it
             console.log(this.details);
+
+            let getWeather = await axios.get(`https://api.open-meteo.com/v1/forecast?latitude=${this.details.location_coordinates.lat}&longitude=${this.details.location_coordinates.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe/Paris&forecast_days=7`)
+            const codes = {
+                0: "Ciel clair ☀️",
+                1: "Principalement clair 🌤️",
+                2: "Partiellement nuageux ⛅",
+                3: "Couvert ☁️",
+                45: "Brouillard 🌫️",
+                48: "Brouillard givrant 🌫️❄️",
+                51: "Bruine légère 🌦️",
+                61: "Pluie faible 🌧️",
+                63: "Pluie modérée 🌧️",
+                65: "Pluie forte ⛈️",
+                71: "Neige légère 🌨️",
+                95: "Orage ⛈️"
+            }
+
+            this.forecast = getWeather.data.daily.time.map((date, i) => ({
+                date,
+                weather: codes[getWeather.data.daily.weathercode[i]] || "Inconnu",
+                min: getWeather.data.daily.temperature_2m_min[i],
+                max: getWeather.data.daily.temperature_2m_max[i]
+            }))
         }
         catch(e)
         {
@@ -40,6 +64,15 @@ export default
         <img :src="details.thumbnail || defaultImage" :alt="details.title_fr"></img>
         <p>Description: {{ details.description_fr }}</p>
         <p>Description longue: <span v-html="details.longdescription_fr"></span></p>
+        <div v-if="forecast.length">
+        <h3>Prévison météorologique de 7 jours</h3>
+            <ul>
+                <li v-for="day in forecast" :key="day.date">
+                <strong>{{ day.date }}</strong> :
+                {{ day.weather }} — {{ day.min }}°C / {{ day.max }}°C
+                </li>
+            </ul>
+        </div>
     </div>
     <div v-else>
         <p>Loading ...</p>

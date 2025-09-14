@@ -1,8 +1,12 @@
+#Import of rest_framework
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+
+#Import of the model user
 from .models import User
 
+#Getting the data from the request
 @api_view(['POST'])
 def login(request):
     data = request.data
@@ -10,6 +14,7 @@ def login(request):
     name = data.get('name')
     picture = data.get('image')
 
+    #Will check if the email have been fill
     if not email:
         return Response({"error": "Email requis"})
     user, created = User.objects.get_or_create(
@@ -21,6 +26,7 @@ def login(request):
         }
     )
 
+    #Will set a message
     if created:
         message = "Nouvel utilisateur créé et connecté"
     else:
